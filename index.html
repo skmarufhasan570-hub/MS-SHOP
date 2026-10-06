@@ -1,0 +1,2869 @@
+<!DOCTYPE html>
+
+<html lang="bn">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>MS SHOP - Online Shopping</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,"Noto Sans Bengali",sans-serif;
+}
+
+body{
+background:#f5f7fb;
+color:#222;
+}
+
+/* HEADER */
+
+header{
+background:#172554;
+color:white;
+padding:15px 5%;
+position:sticky;
+top:0;
+z-index:1000;
+}
+
+.nav{
+max-width:1200px;
+margin:auto;
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:20px;
+}
+
+.logo{
+font-size:28px;
+font-weight:bold;
+}
+
+.logo span{
+color:#38bdf8;
+}
+
+.search{
+flex:1;
+max-width:500px;
+display:flex;
+}
+
+.search input{
+width:100%;
+padding:12px;
+border:0;
+outline:none;
+border-radius:7px 0 0 7px;
+font-size:15px;
+}
+
+.search button{
+border:0;
+padding:0 18px;
+background:#38bdf8;
+cursor:pointer;
+border-radius:0 7px 7px 0;
+}
+
+.cart-btn{
+background:#f97316;
+color:white;
+border:0;
+padding:12px 18px;
+border-radius:7px;
+cursor:pointer;
+font-weight:bold;
+}
+
+/* HERO */
+
+.hero{
+max-width:1200px;
+margin:25px auto;
+padding:55px 40px;
+border-radius:15px;
+background:linear-gradient(120deg,#172554,#2563eb);
+color:white;
+}
+
+.hero h1{
+font-size:42px;
+margin-bottom:15px;
+}
+
+.hero p{
+font-size:18px;
+margin-bottom:25px;
+}
+
+.hero button{
+padding:13px 25px;
+border:0;
+border-radius:7px;
+background:#f97316;
+color:white;
+cursor:pointer;
+font-size:16px;
+}
+
+/* PRODUCTS */
+
+.container{
+max-width:1200px;
+margin:30px auto;
+padding:0 15px;
+}
+
+.section-title{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:20px;
+}
+
+.section-title h2{
+font-size:27px;
+}
+
+.products{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:20px;
+}
+
+.product{
+background:white;
+border-radius:12px;
+overflow:hidden;
+box-shadow:0 3px 12px rgba(0,0,0,.08);
+}
+
+.product img{
+width:100%;
+height:220px;
+object-fit:cover;
+}
+
+.product-info{
+padding:15px;
+}
+
+.product h3{
+margin-bottom:8px;
+}
+
+.price{
+color:#e11d48;
+font-size:21px;
+font-weight:bold;
+margin-bottom:12px;
+}
+
+.product button{
+width:100%;
+border:0;
+background:#172554;
+color:white;
+padding:11px;
+border-radius:6px;
+cursor:pointer;
+}
+
+.product button:hover{
+background:#2563eb;
+}
+
+.order-btn{
+width:100%;
+border:0;
+background:#f97316 !important;
+color:white;
+padding:11px;
+border-radius:6px;
+cursor:pointer;
+margin-top:8px;
+font-weight:bold;
+}
+
+.order-btn:hover{
+background:#ea580c !important;
+}
+
+.empty{
+text-align:center;
+padding:50px;
+color:#777;
+}
+
+/* FOOTER */
+
+footer{
+margin-top:50px;
+background:#172554;
+color:white;
+padding:30px;
+text-align:center;
+}
+
+.whatsapp-btn{
+display:inline-block;
+margin-top:15px;
+background:#25D366;
+color:white;
+text-decoration:none;
+padding:12px 22px;
+border-radius:7px;
+font-weight:bold;
+}
+
+/* CART */
+
+.overlay{
+display:none;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.5);
+z-index:2000;
+}
+
+.cart{
+position:absolute;
+right:0;
+top:0;
+width:400px;
+max-width:100%;
+height:100%;
+background:white;
+padding:20px;
+overflow-y:auto;
+}
+
+.cart-head{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:20px;
+}
+
+.close{
+background:#ef4444;
+color:white;
+border:0;
+padding:7px 12px;
+border-radius:5px;
+cursor:pointer;
+}
+
+.cart-item{
+display:flex;
+gap:10px;
+border-bottom:1px solid #ddd;
+padding:12px 0;
+}
+
+.cart-item img{
+width:65px;
+height:65px;
+object-fit:cover;
+border-radius:6px;
+}
+
+.cart-item-info{
+flex:1;
+}
+
+.qty{
+display:flex;
+gap:8px;
+align-items:center;
+margin-top:7px;
+}
+
+.qty button{
+border:0;
+background:#ddd;
+width:25px;
+height:25px;
+cursor:pointer;
+}
+
+.total{
+font-size:21px;
+font-weight:bold;
+margin:20px 0;
+}
+
+.checkout-btn{
+width:100%;
+padding:13px;
+border:0;
+border-radius:7px;
+background:#16a34a;
+color:white;
+cursor:pointer;
+font-size:16px;
+}
+
+/* CHECKOUT */
+
+.modal{
+display:none;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.6);
+z-index:3000;
+padding:20px;
+overflow:auto;
+}
+
+.modal-box{
+max-width:600px;
+margin:30px auto;
+background:white;
+padding:25px;
+border-radius:12px;
+}
+
+.modal-box h2{
+margin-bottom:20px;
+}
+
+.form-group{
+margin-bottom:15px;
+}
+
+.form-group label{
+display:block;
+margin-bottom:6px;
+font-weight:bold;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select{
+width:100%;
+padding:12px;
+border:1px solid #ccc;
+border-radius:6px;
+outline:none;
+font-size:15px;
+background:white;
+}
+
+.form-group textarea{
+min-height:100px;
+resize:vertical;
+}
+
+/* PAYMENT */
+
+.payment-option{
+background:#f8fafc;
+border:1px solid #ddd;
+padding:14px;
+border-radius:8px;
+margin-top:8px;
+cursor:pointer;
+}
+
+.payment-option:hover{
+border-color:#2563eb;
+background:#eff6ff;
+}
+
+.payment-option label{
+cursor:pointer;
+display:block;
+}
+
+.payment-option input{
+width:auto;
+margin-right:8px;
+}
+
+.online-payment-box{
+display:none;
+background:#eff6ff;
+border:1px solid #bfdbfe;
+padding:15px;
+border-radius:8px;
+margin:15px 0;
+}
+
+.online-payment-box h3{
+color:#1d4ed8;
+margin-bottom:8px;
+}
+
+.payment-number{
+background:white;
+padding:10px;
+border-radius:6px;
+margin-top:8px;
+font-weight:bold;
+}
+
+/* DELIVERY */
+
+.delivery-box{
+background:#f1f5f9;
+padding:15px;
+border-radius:8px;
+margin:15px 0;
+}
+
+.delivery-row{
+display:flex;
+justify-content:space-between;
+margin:8px 0;
+}
+
+.grand-total{
+border-top:1px solid #ddd;
+margin-top:10px;
+padding-top:12px;
+font-size:20px;
+font-weight:bold;
+color:#e11d48;
+}
+
+.place-order{
+width:100%;
+padding:13px;
+border:0;
+background:#2563eb;
+color:white;
+border-radius:6px;
+cursor:pointer;
+font-size:16px;
+font-weight:bold;
+}
+
+.cancel{
+width:100%;
+padding:11px;
+margin-top:8px;
+border:0;
+background:#ddd;
+border-radius:6px;
+cursor:pointer;
+}
+
+/* MOBILE */
+
+@media(max-width:900px){
+
+.products{
+    grid-template-columns:repeat(3,1fr);
+}
+
+}
+
+@media(max-width:650px){
+
+.nav{
+    flex-wrap:wrap;
+}
+
+.logo{
+    font-size:23px;
+}
+
+.search{
+    order:3;
+    max-width:none;
+    flex-basis:100%;
+}
+
+.hero{
+    margin:15px;
+    padding:35px 20px;
+}
+
+.hero h1{
+    font-size:30px;
+}
+
+.products{
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+}
+
+.product img{
+    height:160px;
+}
+
+.modal{
+    padding:10px;
+}
+
+.modal-box{
+    margin:10px auto;
+    padding:18px;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- HEADER -->
+
+<header>
+
+<div class="nav">
+
+<div class="logo">
+MS <span>SHOP</span>
+</div>
+
+<div class="search">
+
+<input
+type="text"
+id="searchInput"
+placeholder="পণ্য খুঁজুন..."
+oninput="showProducts()"
+
+>
+
+<button>🔎</button>
+
+</div>
+
+<button
+class="cart-btn"
+onclick="openCart()"
+
+>
+
+🛒 Cart (<span id="cartCount">0</span>) </button>
+
+</div>
+
+</header>
+
+<!-- HERO -->
+
+<section class="hero">
+
+<h1>Welcome to MS SHOP</h1>
+
+<p>
+আপনার পছন্দের পণ্য এখন অনলাইনে সহজেই অর্ডার করুন।
+</p>
+
+<button
+onclick="document.getElementById('products').scrollIntoView()"
+
+>
+
+Shop Now </button>
+
+</section>
+
+<!-- PRODUCTS -->
+
+<div class="container">
+
+<div class="section-title">
+
+<h2>আমাদের পণ্য</h2>
+
+</div>
+
+<div
+class="products"
+id="products"
+></div>
+
+</div>
+
+<!-- FOOTER -->
+
+<footer>
+
+<h3>MS SHOP</h3>
+
+<p style="margin-top:10px;">
+Your Online Shopping Store
+</p>
+
+<a
+class="whatsapp-btn"
+href="https://wa.me/8801334049659"
+target="_blank"
+
+>
+
+📱 WhatsApp এ যোগাযোগ করুন </a>
+
+<p style="margin-top:15px;">
+© 2026 MS SHOP. All Rights Reserved.
+</p>
+
+</footer>
+
+<!-- CART -->
+
+<div
+class="overlay"
+id="cartOverlay"
+>
+
+<div class="cart">
+
+<div class="cart-head">
+
+<h2>🛒 Your Cart</h2>
+
+<button
+class="close"
+onclick="closeCart()"
+
+>
+
+বন্ধ </button>
+
+</div>
+
+<div id="cartItems"></div>
+
+<div class="total">
+
+মোট: ৳<span id="cartTotal">0</span>
+
+</div>
+
+<button
+class="checkout-btn"
+onclick="openCheckout()"
+
+>
+
+Checkout </button>
+
+</div>
+
+</div>
+
+<!-- CHECKOUT -->
+
+<div
+class="modal"
+id="checkoutModal"
+>
+
+<div class="modal-box">
+
+<h2>🛍️ অর্ডার সম্পন্ন করুন</h2>
+
+<form onsubmit="placeOrder(event)">
+
+<!-- NAME -->
+
+<div class="form-group">
+
+<label>আপনার নাম</label>
+
+<input
+type="text"
+id="customerName"
+placeholder="আপনার নাম লিখুন"
+required
+
+>
+
+</div>
+
+<!-- PHONE -->
+
+<div class="form-group">
+
+<label>মোবাইল নম্বর</label>
+
+<input
+type="tel"
+id="customerPhone"
+placeholder="01XXXXXXXXX"
+pattern="01[0-9]{9}"
+required
+
+>
+
+</div>
+
+<!-- DISTRICT -->
+
+<div class="form-group">
+
+<label>১. জেলা নির্বাচন করুন</label>
+
+<select
+id="customerDistrict"
+onchange="updateThana()"
+required
+
+>
+
+<option value="">
+-- জেলা নির্বাচন করুন --
+</option>
+
+<optgroup label="ঢাকা বিভাগ">
+
+<option value="ঢাকা">ঢাকা</option>
+<option value="ফরিদপুর">ফরিদপুর</option>
+<option value="গাজীপুর">গাজীপুর</option>
+<option value="গোপালগঞ্জ">গোপালগঞ্জ</option>
+<option value="কিশোরগঞ্জ">কিশোরগঞ্জ</option>
+<option value="মাদারীপুর">মাদারীপুর</option>
+<option value="মানিকগঞ্জ">মানিকগঞ্জ</option>
+<option value="মুন্সীগঞ্জ">মুন্সীগঞ্জ</option>
+<option value="নারায়ণগঞ্জ">নারায়ণগঞ্জ</option>
+<option value="নরসিংদী">নরসিংদী</option>
+<option value="রাজবাড়ী">রাজবাড়ী</option>
+<option value="শরীয়তপুর">শরীয়তপুর</option>
+<option value="টাঙ্গাইল">টাঙ্গাইল</option>
+
+</optgroup>
+
+<optgroup label="চট্টগ্রাম বিভাগ">
+
+<option value="চট্টগ্রাম">চট্টগ্রাম</option>
+<option value="কুমিল্লা">কুমিল্লা</option>
+<option value="ফেনী">ফেনী</option>
+<option value="ব্রাহ্মণবাড়িয়া">ব্রাহ্মণবাড়িয়া</option>
+<option value="রাঙ্গামাটি">রাঙ্গামাটি</option>
+<option value="নোয়াখালী">নোয়াখালী</option>
+<option value="চাঁদপুর">চাঁদপুর</option>
+<option value="লক্ষ্মীপুর">লক্ষ্মীপুর</option>
+<option value="কক্সবাজার">কক্সবাজার</option>
+<option value="খাগড়াছড়ি">খাগড়াছড়ি</option>
+<option value="বান্দরবান">বান্দরবান</option>
+
+</optgroup>
+
+<optgroup label="রাজশাহী বিভাগ">
+
+<option value="রাজশাহী">রাজশাহী</option>
+<option value="বগুড়া">বগুড়া</option>
+<option value="জয়পুরহাট">জয়পুরহাট</option>
+<option value="নওগাঁ">নওগাঁ</option>
+<option value="নাটোর">নাটোর</option>
+<option value="চাঁপাইনবাবগঞ্জ">চাঁপাইনবাবগঞ্জ</option>
+<option value="পাবনা">পাবনা</option>
+<option value="সিরাজগঞ্জ">সিরাজগঞ্জ</option>
+
+</optgroup>
+
+<optgroup label="খুলনা বিভাগ">
+
+<option value="খুলনা">খুলনা</option>
+<option value="বাগেরহাট">বাগেরহাট</option>
+<option value="চুয়াডাঙ্গা">চুয়াডাঙ্গা</option>
+<option value="যশোর">যশোর</option>
+<option value="ঝিনাইদহ">ঝিনাইদহ</option>
+<option value="কুষ্টিয়া">কুষ্টিয়া</option>
+<option value="মাগুরা">মাগুরা</option>
+<option value="মেহেরপুর">মেহেরপুর</option>
+<option value="নড়াইল">নড়াইল</option>
+<option value="সাতক্ষীরা">সাতক্ষীরা</option>
+
+</optgroup>
+
+<optgroup label="বরিশাল বিভাগ">
+
+<option value="বরিশাল">বরিশাল</option>
+<option value="ভোলা">ভোলা</option>
+<option value="ঝালকাঠি">ঝালকাঠি</option>
+<option value="পটুয়াখালী">পটুয়াখালী</option>
+<option value="পিরোজপুর">পিরোজপুর</option>
+<option value="বরগুনা">বরগুনা</option>
+
+</optgroup>
+
+<optgroup label="সিলেট বিভাগ">
+
+<option value="সিলেট">সিলেট</option>
+<option value="মৌলভীবাজার">মৌলভীবাজার</option>
+<option value="হবিগঞ্জ">হবিগঞ্জ</option>
+<option value="সুনামগঞ্জ">সুনামগঞ্জ</option>
+
+</optgroup>
+
+<optgroup label="রংপুর বিভাগ">
+
+<option value="রংপুর">রংপুর</option>
+<option value="দিনাজপুর">দিনাজপুর</option>
+<option value="কুড়িগ্রাম">কুড়িগ্রাম</option>
+<option value="লালমনিরহাট">লালমনিরহাট</option>
+<option value="নীলফামারী">নীলফামারী</option>
+<option value="পঞ্চগড়">পঞ্চগড়</option>
+<option value="ঠাকুরগাঁও">ঠাকুরগাঁও</option>
+<option value="গাইবান্ধা">গাইবান্ধা</option>
+
+</optgroup>
+
+<optgroup label="ময়মনসিংহ বিভাগ">
+
+<option value="ময়মনসিংহ">ময়মনসিংহ</option>
+<option value="জামালপুর">জামালপুর</option>
+<option value="নেত্রকোণা">নেত্রকোণা</option>
+<option value="শেরপুর">শেরপুর</option>
+
+</optgroup>
+
+</select>
+
+</div>
+
+<!-- THANA -->
+
+<div class="form-group">
+
+<label>২. থানা / উপজেলা নির্বাচন করুন</label>
+
+<select
+id="customerThana"
+onchange="showVillageBox()"
+required
+disabled
+
+>
+
+<option value="">
+-- আগে জেলা নির্বাচন করুন --
+</option>
+
+</select>
+
+</div>
+
+<!-- VILLAGE -->
+
+<div
+class="form-group"
+id="villageBox"
+style="display:none;"
+>
+
+<label>৩. গ্রাম / এলাকা</label>
+
+<input
+type="text"
+id="customerVillage"
+placeholder="আপনার গ্রাম / এলাকার নাম লিখুন"
+required
+
+>
+
+</div>
+
+<!-- ADDRESS -->
+
+<div class="form-group">
+
+<label>৪. বিস্তারিত ঠিকানা</label>
+
+<textarea
+id="customerAddress"
+placeholder="বাড়ি নম্বর / রোড / বাড়ির নাম / মার্কেট / অন্যান্য ঠিকানা"
+required
+></textarea>
+
+</div>
+
+<!-- PAYMENT -->
+
+<div class="form-group">
+
+<label>৫. পেমেন্ট পদ্ধতি নির্বাচন করুন</label>
+
+<div class="payment-option">
+
+<label>
+
+<input
+type="radio"
+name="payment"
+value="Cash on Delivery"
+checked
+onchange="changePaymentMethod()"
+
+>
+
+💵 Cash on Delivery
+
+</label>
+
+</div>
+
+<div class="payment-option">
+
+<label>
+
+<input
+type="radio"
+name="payment"
+value="Online Payment"
+onchange="changePaymentMethod()"
+
+>
+
+💳 Online Payment
+
+</label>
+
+</div>
+
+</div>
+
+<!-- ONLINE PAYMENT -->
+
+<div
+class="online-payment-box"
+id="onlinePaymentBox"
+>
+
+<h3>💳 Online Payment</h3>
+
+<p>
+আপনি Online Payment নির্বাচন করেছেন।
+</p>
+
+<p style="margin-top:8px;">
+bKash / Nagad / অন্যান্য পেমেন্টের মাধ্যমে পেমেন্ট করুন।
+</p>
+
+<div class="payment-number">
+
+📱 Payment Number: <span>01334049659</span>
+
+</div>
+
+<div
+class="form-group"
+style="margin-top:15px;"
+>
+
+<label>Transaction ID</label>
+
+<input
+type="text"
+id="transactionId"
+placeholder="Transaction ID লিখুন"
+
+>
+
+</div>
+
+</div>
+
+<!-- ORDER SUMMARY -->
+
+<div class="delivery-box">
+
+<h3 style="margin-bottom:12px;">
+🧾 Order Summary
+</h3>
+
+<div class="delivery-row">
+
+<span>পণ্যের মোট দাম:</span>
+
+<strong>
+৳<span id="checkoutProductTotal">0</span>
+</strong>
+
+</div>
+
+<div class="delivery-row">
+
+<span>ডেলিভারি চার্জ:</span>
+
+<strong>
+৳<span id="deliveryCharge">0</span>
+</strong>
+
+</div>
+
+<div class="grand-total">
+
+<div class="delivery-row">
+
+<span>সর্বমোট:</span>
+
+<strong>
+৳<span id="grandTotal">0</span>
+</strong>
+
+</div>
+
+</div>
+
+</div>
+
+<div
+style="
+background:#fff7ed;
+padding:12px;
+border-radius:7px;
+margin-bottom:15px;
+font-size:14px;
+"
+>
+
+🚚 <strong>ডেলিভারি চার্জ</strong>
+
+<br>
+
+ঢাকার ভিতরে: <strong>৳60</strong>
+
+<br>
+
+ঢাকার বাইরে: <strong>৳120</strong>
+
+</div>
+
+<!-- PLACE ORDER -->
+
+<button
+class="place-order"
+type="submit"
+
+>
+
+✅ অর্ডার কনফার্ম করুন </button>
+
+<button
+type="button"
+class="cancel"
+onclick="closeCheckout()"
+
+>
+
+বাতিল </button>
+
+</form>
+
+</div>
+
+</div>
+
+<script>
+
+/* =========================
+GOOGLE SHEETS
+========================= */
+
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwxCzypBRkOXj5EjT0aKzz19ywPE3vSDIbu1izach7QxVKkqMjHXH2rzzvXKIYZohHciQ/exec";
+
+/* =========================
+PRODUCTS
+========================= */
+
+function getProducts(){
+
+const saved =
+    localStorage.getItem("ms_products");
+
+if(saved){
+
+    try{
+
+        return JSON.parse(saved);
+
+    }catch(error){
+
+        console.log("Product data error");
+
+    }
+
+}
+
+return [
+
+    {
+        id:1,
+        name:"Premium T-Shirt",
+        price:650,
+        image:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=600&q=80"
+    },
+
+    {
+        id:2,
+        name:"Sports Shoe",
+        price:1450,
+        image:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=600&q=80"
+    },
+
+    {
+        id:3,
+        name:"Smart Watch",
+        price:2200,
+        image:"https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=600&q=80"
+    },
+
+    {
+        id:4,
+        name:"Backpack",
+        price:950,
+        image:"https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=600&q=80"
+    }
+
+];
+
+}
+
+let products = getProducts();
+
+/* =========================
+CART
+========================= */
+
+let cart =
+JSON.parse(
+localStorage.getItem("ms_cart") || "[]"
+);
+
+function saveCart(){
+
+localStorage.setItem(
+    "ms_cart",
+    JSON.stringify(cart)
+);
+
+}
+
+/* =========================
+SHOW PRODUCTS
+========================= */
+
+function showProducts(){
+
+const box =
+    document.getElementById("products");
+
+const search =
+    document
+    .getElementById("searchInput")
+    .value
+    .toLowerCase();
+
+products = getProducts();
+
+const filtered =
+    products.filter(function(product){
+
+        return product.name
+            .toLowerCase()
+            .includes(search);
+
+    });
+
+
+
+if(filtered.length === 0){
+
+    box.innerHTML = `
+        <div class="empty">
+            কোনো পণ্য পাওয়া যায়নি।
+        </div>
+    `;
+
+    return;
+
+}
+
+
+
+box.innerHTML =
+    filtered.map(function(product){
+
+        return `
+
+        <div class="product">
+
+            <img
+            src="${product.image}"
+            alt="${product.name}"
+            >
+
+            <div class="product-info">
+
+                <h3>
+                    ${product.name}
+                </h3>
+
+                <div class="price">
+                    ৳${product.price}
+                </div>
+
+                <button
+                onclick="addToCart(${product.id})"
+                >
+                    🛒 Add to Cart
+                </button>
+
+                <button
+                class="order-btn"
+                onclick="orderNow(${product.id})"
+                >
+                    🛍️ অর্ডার করুন
+                </button>
+
+            </div>
+
+        </div>
+
+        `;
+
+    }).join("");
+
+}
+
+/* =========================
+ADD CART
+========================= */
+
+function addToCart(id){
+
+const product =
+    products.find(function(p){
+
+        return p.id === id;
+
+    });
+
+
+
+if(!product){
+
+    alert("Product পাওয়া যায়নি!");
+
+    return;
+
+}
+
+
+
+const existing =
+    cart.find(function(p){
+
+        return p.id === id;
+
+    });
+
+
+
+if(existing){
+
+    existing.qty++;
+
+}else{
+
+    cart.push({
+
+        ...product,
+
+        qty:1
+
+    });
+
+}
+
+
+
+saveCart();
+
+updateCart();
+
+alert("পণ্যটি Cart-এ যোগ হয়েছে!");
+
+}
+
+/* =========================
+DIRECT ORDER
+========================= */
+
+function orderNow(id){
+
+const product =
+    products.find(function(p){
+
+        return p.id == id;
+
+    });
+
+
+
+if(!product){
+
+    alert("Product পাওয়া যায়নি!");
+
+    return;
+
+}
+
+
+
+cart = [
+
+    {
+        ...product,
+        qty:1
+    }
+
+];
+
+
+
+updateCart();
+
+document.getElementById(
+    "checkoutModal"
+).style.display = "block";
+
+updateCheckoutTotal();
+
+}
+
+/* =========================
+UPDATE CART
+========================= */
+
+function updateCart(){
+
+const count =
+    cart.reduce(function(sum,item){
+
+        return sum + item.qty;
+
+    },0);
+
+
+
+document.getElementById(
+    "cartCount"
+).textContent = count;
+
+
+
+const items =
+    document.getElementById("cartItems");
+
+
+
+if(cart.length === 0){
+
+    items.innerHTML = `
+        <div class="empty">
+            আপনার Cart খালি।
+        </div>
+    `;
+
+
+
+    document.getElementById(
+        "cartTotal"
+    ).textContent = 0;
+
+
+
+    return;
+
+}
+
+
+
+items.innerHTML =
+    cart.map(function(item){
+
+        return `
+
+        <div class="cart-item">
+
+            <img
+            src="${item.image}"
+            alt="${item.name}"
+            >
+
+            <div class="cart-item-info">
+
+                <strong>
+                    ${item.name}
+                </strong>
+
+                <div>
+                    ৳${item.price}
+                </div>
+
+                <div class="qty">
+
+                    <button
+                    onclick="changeQty(${item.id},-1)"
+                    >
+                    -
+                    </button>
+
+                    <span>
+                        ${item.qty}
+                    </span>
+
+                    <button
+                    onclick="changeQty(${item.id},1)"
+                    >
+                    +
+                    </button>
+
+                    <button
+                    onclick="removeCart(${item.id})"
+                    style="
+                    margin-left:8px;
+                    background:#fecaca;
+                    "
+                    >
+                    🗑
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        `;
+
+    }).join("");
+
+
+
+const total =
+    cart.reduce(function(sum,item){
+
+        return sum +
+            item.price * item.qty;
+
+    },0);
+
+
+
+document.getElementById(
+    "cartTotal"
+).textContent = total;
+
+}
+
+/* =========================
+DISTRICT → THANA
+========================= */
+
+const thanaData = {
+
+"ঢাকা":[
+"ধামরাই",
+"দোহার",
+"কেরানীগঞ্জ",
+"নবাবগঞ্জ",
+"সাভার",
+"ঢাকা মহানগর"
+],
+
+"ফরিদপুর":[
+"ফরিদপুর সদর",
+"বোয়ালমারী",
+"আলফাডাঙ্গা",
+"মধুখালী",
+"নগরকান্দা",
+"ভাঙ্গা",
+"সদরপুর",
+"চরভদ্রাসন",
+"সালথা"
+],
+
+"গাজীপুর":[
+"গাজীপুর সদর",
+"কালিয়াকৈর",
+"কালীগঞ্জ",
+"কাপাসিয়া",
+"শ্রীপুর"
+],
+
+"গোপালগঞ্জ":[
+"গোপালগঞ্জ সদর",
+"কাশিয়ানী",
+"কোটালীপাড়া",
+"মুকসুদপুর",
+"টুঙ্গিপাড়া"
+],
+
+"কিশোরগঞ্জ":[
+"কিশোরগঞ্জ সদর",
+"অষ্টগ্রাম",
+"বাজিতপুর",
+"ভৈরব",
+"হোসেনপুর",
+"ইটনা",
+"করিমগঞ্জ",
+"কটিয়াদী",
+"কুলিয়ারচর",
+"মিঠামইন",
+"নিকলী",
+"পাকুন্দিয়া",
+"তাড়াইল"
+],
+
+"মাদারীপুর":[
+"মাদারীপুর সদর",
+"কালকিনি",
+"রাজৈর",
+"শিবচর",
+"ডাসার"
+],
+
+"মানিকগঞ্জ":[
+"মানিকগঞ্জ সদর",
+"সাটুরিয়া",
+"শিবালয়",
+"সিংগাইর",
+"ঘিওর",
+"দৌলতপুর",
+"হরিরামপুর"
+],
+
+"মুন্সীগঞ্জ":[
+"মুন্সীগঞ্জ সদর",
+"গজারিয়া",
+"লৌহজং",
+"শ্রীনগর",
+"সিরাজদিখান",
+"টঙ্গীবাড়ী"
+],
+
+"নারায়ণগঞ্জ":[
+"নারায়ণগঞ্জ সদর",
+"বন্দর",
+"আড়াইহাজার",
+"রূপগঞ্জ",
+"সোনারগাঁ"
+],
+
+"নরসিংদী":[
+"নরসিংদী সদর",
+"বেলাব",
+"মনোহরদী",
+"পলাশ",
+"রায়পুরা",
+"শিবপুর"
+],
+
+"রাজবাড়ী":[
+"রাজবাড়ী সদর",
+"বালিয়াকান্দি",
+"কালুখালী",
+"গোয়ালন্দ",
+"পাংশা"
+],
+
+"শরীয়তপুর":[
+"শরীয়তপুর সদর",
+"ভেদরগঞ্জ",
+"ডামুড্যা",
+"গোসাইরহাট",
+"জাজিরা",
+"নড়িয়া"
+],
+
+"টাঙ্গাইল":[
+"টাঙ্গাইল সদর",
+"বাসাইল",
+"ভুয়াপুর",
+"দেলদুয়ার",
+"ধনবাড়ী",
+"ঘাটাইল",
+"গোপালপুর",
+"কালিহাতী",
+"মধুপুর",
+"মির্জাপুর",
+"নাগরপুর",
+"সখীপুর"
+],
+
+"চট্টগ্রাম":[
+"চট্টগ্রাম সদর",
+"আনোয়ারা",
+"বাঁশখালী",
+"বোয়ালখালী",
+"চন্দনাইশ",
+"ফটিকছড়ি",
+"হাটহাজারী",
+"লোহাগাড়া",
+"মীরসরাই",
+"পটিয়া",
+"রাঙ্গুনিয়া",
+"রাউজান",
+"সন্দ্বীপ",
+"সাতকানিয়া",
+"সীতাকুণ্ড"
+],
+
+"কুমিল্লা":[
+"কুমিল্লা সদর",
+"বরুড়া",
+"ব্রাহ্মণপাড়া",
+"বুড়িচং",
+"চান্দিনা",
+"চৌদ্দগ্রাম",
+"দাউদকান্দি",
+"দেবিদ্বার",
+"হোমনা",
+"লাকসাম",
+"লালমাই",
+"মুরাদনগর",
+"নাঙ্গলকোট",
+"তিতাস"
+],
+
+"ফেনী":[
+"ফেনী সদর",
+"ছাগলনাইয়া",
+"দাগনভূঞা",
+"পরশুরাম",
+"সোনাগাজী",
+"ফুলগাজী"
+],
+
+"ব্রাহ্মণবাড়িয়া":[
+"ব্রাহ্মণবাড়িয়া সদর",
+"আখাউড়া",
+"আশুগঞ্জ",
+"বাঞ্ছারামপুর",
+"কসবা",
+"নবীনগর",
+"নাসিরনগর",
+"সরাইল",
+"বিজয়নগর"
+],
+
+"রাঙ্গামাটি":[
+"রাঙ্গামাটি সদর",
+"বাঘাইছড়ি",
+"বরকল",
+"বিলাইছড়ি",
+"জুরাছড়ি",
+"কাপ্তাই",
+"কাউখালী",
+"লংগদু",
+"নানিয়ারচর",
+"রাজস্থলী"
+],
+
+"নোয়াখালী":[
+"নোয়াখালী সদর",
+"বেগমগঞ্জ",
+"চাটখিল",
+"কোম্পানীগঞ্জ",
+"হাতিয়া",
+"সেনবাগ",
+"সুবর্ণচর",
+"সোনাইমুড়ী"
+],
+
+"চাঁদপুর":[
+"চাঁদপুর সদর",
+"ফরিদগঞ্জ",
+"হাইমচর",
+"হাজীগঞ্জ",
+"কচুয়া",
+"মতলব উত্তর",
+"মতলব দক্ষিণ",
+"শাহরাস্তি"
+],
+
+"লক্ষ্মীপুর":[
+"লক্ষ্মীপুর সদর",
+"কমলনগর",
+"রামগঞ্জ",
+"রামগতি",
+"রায়পুর"
+],
+
+"কক্সবাজার":[
+"কক্সবাজার সদর",
+"চকরিয়া",
+"কুতুবদিয়া",
+"মহেশখালী",
+"পেকুয়া",
+"রামু",
+"টেকনাফ",
+"উখিয়া"
+],
+
+"খাগড়াছড়ি":[
+"খাগড়াছড়ি সদর",
+"দীঘিনালা",
+"দীঘিনালা",
+"মহালছড়ি",
+"মানিকছড়ি",
+"মাটিরাঙ্গা",
+"পানছড়ি",
+"রামগড়",
+"লক্ষ্মীছড়ি"
+],
+
+"বান্দরবান":[
+"বান্দরবান সদর",
+"আলীকদম",
+"লামা",
+"নাইক্ষ্যংছড়ি",
+"রুমা",
+"রোয়াংছড়ি",
+"থানচি"
+],
+
+"রাজশাহী":[
+"রাজশাহী সদর",
+"বাগমারা",
+"বাঘা",
+"চারঘাট",
+"দুর্গাপুর",
+"গোদাগাড়ী",
+"মোহনপুর",
+"পবা",
+"পুঠিয়া",
+"তানোর"
+],
+
+"বগুড়া":[
+"বগুড়া সদর",
+"আদমদীঘি",
+"ধুনট",
+"দুপচাঁচিয়া",
+"গাবতলী",
+"কাহালু",
+"নন্দীগ্রাম",
+"সারিয়াকান্দি",
+"শাজাহানপুর",
+"শেরপুর",
+"শিবগঞ্জ",
+"সোনাতলা"
+],
+
+"জয়পুরহাট":[
+"জয়পুরহাট সদর",
+"আক্কেলপুর",
+"কালাই",
+"ক্ষেতলাল",
+"পাঁচবিবি"
+],
+
+"নওগাঁ":[
+"নওগাঁ সদর",
+"আত্রাই",
+"বদলগাছী",
+"ধামইরহাট",
+"মান্দা",
+"মহাদেবপুর",
+"নিয়ামতপুর",
+"পত্নীতলা",
+"পোরশা",
+"রাণীনগর",
+"সাপাহার"
+],
+
+"নাটোর":[
+"নাটোর সদর",
+"বাগাতিপাড়া",
+"বড়াইগ্রাম",
+"গুরুদাসপুর",
+"লালপুর",
+"সিংড়া",
+"নলডাঙ্গা"
+],
+
+"চাঁপাইনবাবগঞ্জ":[
+"চাঁপাইনবাবগঞ্জ সদর",
+"ভোলাহাট",
+"গোমস্তাপুর",
+"নাচোল",
+"শিবগঞ্জ"
+],
+
+"পাবনা":[
+"পাবনা সদর",
+"আটঘরিয়া",
+"বেড়া",
+"ভাঙ্গুড়া",
+"চাটমোহর",
+"ফরিদপুর",
+"ঈশ্বরদী",
+"সাঁথিয়া",
+"সুজানগর"
+],
+
+"সিরাজগঞ্জ":[
+"সিরাজগঞ্জ সদর",
+"বেলকুচি",
+"চৌহালী",
+"কামারখন্দ",
+"কাজীপুর",
+"রায়গঞ্জ",
+"শাহজাদপুর",
+"তাড়াশ",
+"উল্লাপাড়া"
+],
+
+"খুলনা":[
+"খুলনা সদর",
+"বটিয়াঘাটা",
+"দাকোপ",
+"ডুমুরিয়া",
+"দিঘলিয়া",
+"কয়রা",
+"পাইকগাছা",
+"ফুলতলা",
+"রূপসা",
+"তেরখাদা"
+],
+
+"বাগেরহাট":[
+"বাগেরহাট সদর",
+"চিতলমারী",
+"ফকিরহাট",
+"কচুয়া",
+"মোল্লাহাট",
+"মোংলা",
+"মোড়েলগঞ্জ",
+"রামপাল",
+"শরণখোলা"
+],
+
+"চুয়াডাঙ্গা":[
+"চুয়াডাঙ্গা সদর",
+"আলমডাঙ্গা",
+"দামুড়হুদা",
+"জীবননগর"
+],
+
+"যশোর":[
+"যশোর সদর",
+"অভয়নগর",
+"বাঘারপাড়া",
+"চৌগাছা",
+"ঝিকরগাছা",
+"কেশবপুর",
+"মনিরামপুর",
+"শার্শা"
+],
+
+"ঝিনাইদহ":[
+"ঝিনাইদহ সদর",
+"কালীগঞ্জ",
+"কোটচাঁদপুর",
+"মহেশপুর",
+"শৈলকুপা",
+"হরিণাকুণ্ডু"
+],
+
+"কুষ্টিয়া":[
+"কুষ্টিয়া সদর",
+"ভেড়ামারা",
+"দৌলতপুর",
+"খোকসা",
+"কুমারখালী",
+"মিরপুর"
+],
+
+"মাগুরা":[
+"মাগুরা সদর",
+"মোহাম্মদপুর",
+"শালিখা",
+"শ্রীপুর"
+],
+
+"মেহেরপুর":[
+"মেহেরপুর সদর",
+"গাংনী",
+"মুজিবনগর"
+],
+
+"নড়াইল":[
+"নড়াইল সদর",
+"লোহাগড়া",
+"কালিয়া"
+],
+
+"সাতক্ষীরা":[
+"সাতক্ষীরা সদর",
+"আশাশুনি",
+"দেবহাটা",
+"কলারোয়া",
+"কালিগঞ্জ",
+"শ্যামনগর",
+"তালা"
+],
+
+"বরিশাল":[
+"বরিশাল সদর",
+"আগৈলঝাড়া",
+"বাবুগঞ্জ",
+"বাকেরগঞ্জ",
+"বানারীপাড়া",
+"গৌরনদী",
+"হিজলা",
+"মেহেন্দিগঞ্জ",
+"মুলাদী",
+"উজিরপুর"
+],
+
+"ভোলা":[
+"ভোলা সদর",
+"বোরহানউদ্দিন",
+"চরফ্যাশন",
+"দৌলতখান",
+"লালমোহন",
+"মনপুরা",
+"তজুমদ্দিন"
+],
+
+"ঝালকাঠি":[
+"ঝালকাঠি সদর",
+"কাঁঠালিয়া",
+"নলছিটি",
+"রাজাপুর"
+],
+
+"পটুয়াখালী":[
+"পটুয়াখালী সদর",
+"বাউফল",
+"দশমিনা",
+"দুমকি",
+"কলাপাড়া",
+"মির্জাগঞ্জ",
+"গলাচিপা",
+"রাঙ্গাবালী"
+],
+
+"পিরোজপুর":[
+"পিরোজপুর সদর",
+"ভান্ডারিয়া",
+"কাউখালী",
+"মঠবাড়িয়া",
+"নাজিরপুর",
+"নেছারাবাদ",
+"ইন্দুরকানী"
+],
+
+"বরগুনা":[
+"বরগুনা সদর",
+"আমতলী",
+"বামনা",
+"বেতাগী",
+"পাথরঘাটা",
+"তালতলী"
+],
+
+"সিলেট":[
+"সিলেট সদর",
+"বালাগঞ্জ",
+"বিয়ানীবাজার",
+"বিশ্বনাথ",
+"কোম্পানীগঞ্জ",
+"ফেঞ্চুগঞ্জ",
+"গোলাপগঞ্জ",
+"জৈন্তাপুর",
+"কানাইঘাট",
+"জকিগঞ্জ",
+"দক্ষিণ সুরমা",
+"ওসমানীনগর"
+],
+
+"মৌলভীবাজার":[
+"মৌলভীবাজার সদর",
+"বড়লেখা",
+"জুড়ী",
+"কমলগঞ্জ",
+"কুলাউড়া",
+"রাজনগর",
+"শ্রীমঙ্গল"
+],
+
+"হবিগঞ্জ":[
+"হবিগঞ্জ সদর",
+"আজমিরীগঞ্জ",
+"বাহুবল",
+"বানিয়াচং",
+"চুনারুঘাট",
+"লাখাই",
+"মাধবপুর",
+"নবীগঞ্জ",
+"শায়েস্তাগঞ্জ"
+],
+
+"সুনামগঞ্জ":[
+"সুনামগঞ্জ সদর",
+"ছাতক",
+"দিরাই",
+"ধর্মপাশা",
+"দোয়ারাবাজার",
+"জামালগঞ্জ",
+"জগন্নাথপুর",
+"শাল্লা",
+"তাহিরপুর",
+"শান্তিগঞ্জ"
+],
+
+"রংপুর":[
+"রংপুর সদর",
+"বদরগঞ্জ",
+"গংগাচড়া",
+"কাউনিয়া",
+"মিঠাপুকুর",
+"পীরগাছা",
+"পীরগঞ্জ",
+"তারাগঞ্জ"
+],
+
+"দিনাজপুর":[
+"দিনাজপুর সদর",
+"বীরগঞ্জ",
+"বিরামপুর",
+"বিরল",
+"বোচাগঞ্জ",
+"চিরিরবন্দর",
+"ফুলবাড়ী",
+"ঘোড়াঘাট",
+"হাকিমপুর",
+"কাহারোল",
+"খানসামা",
+"নবাবগঞ্জ",
+"পার্বতীপুর"
+],
+
+"কুড়িগ্রাম":[
+"কুড়িগ্রাম সদর",
+"ভুরুঙ্গামারী",
+"চর রাজিবপুর",
+"চিলমারী",
+"ফুলবাড়ী",
+"নাগেশ্বরী",
+"রাজারহাট",
+"রৌমারী",
+"উলিপুর"
+],
+
+"লালমনিরহাট":[
+"লালমনিরহাট সদর",
+"আদিতমারী",
+"কালীগঞ্জ",
+"হাতীবান্ধা",
+"পাটগ্রাম"
+],
+
+"নীলফামারী":[
+"নীলফামারী সদর",
+"ডোমার",
+"ডিমলা",
+"জলঢাকা",
+"কিশোরগঞ্জ",
+"সৈয়দপুর"
+],
+
+"পঞ্চগড়":[
+"পঞ্চগড় সদর",
+"আটোয়ারী",
+"বোদা",
+"দেবীগঞ্জ",
+"তেঁতুলিয়া"
+],
+
+"ঠাকুরগাঁও":[
+"ঠাকুরগাঁও সদর",
+"বালিয়াডাঙ্গী",
+"হরিপুর",
+"পীরগঞ্জ",
+"রাণীশংকৈল"
+],
+
+"গাইবান্ধা":[
+"গাইবান্ধা সদর",
+"ফুলছড়ি",
+"গোবিন্দগঞ্জ",
+"পলাশবাড়ী",
+"সাদুল্লাপুর",
+"সাঘাটা",
+"সুন্দরগঞ্জ"
+],
+
+"ময়মনসিংহ":[
+"ময়মনসিংহ সদর",
+"ভালুকা",
+"ধোবাউড়া",
+"ফুলবাড়িয়া",
+"গফরগাঁও",
+"গৌরীপুর",
+"হালুয়াঘাট",
+"ঈশ্বরগঞ্জ",
+"মুক্তাগাছা",
+"নান্দাইল",
+"ফুলপুর",
+"ত্রিশাল"
+],
+
+"জামালপুর":[
+"জামালপুর সদর",
+"বকশীগঞ্জ",
+"দেওয়ানগঞ্জ",
+"ইসলামপুর",
+"মাদারগঞ্জ",
+"মেলান্দহ",
+"সরিষাবাড়ী"
+],
+
+"নেত্রকোণা":[
+"নেত্রকোণা সদর",
+"আটপাড়া",
+"বারহাট্টা",
+"দুর্গাপুর",
+"খালিয়াজুড়ি",
+"কলমাকান্দা",
+"কেন্দুয়া",
+"মদন",
+"মোহনগঞ্জ",
+"পূর্বধলা"
+],
+
+"শেরপুর":[
+"শেরপুর সদর",
+"ঝিনাইগাতী",
+"নকলা",
+"নালিতাবাড়ী",
+"শ্রীবরদী"
+]
+
+};
+
+/* =========================
+UPDATE THANA
+========================= */
+
+function updateThana(){
+
+const district =
+    document.getElementById(
+        "customerDistrict"
+    ).value;
+
+
+
+const thana =
+    document.getElementById(
+        "customerThana"
+    );
+
+
+
+const villageBox =
+    document.getElementById(
+        "villageBox"
+    );
+
+
+
+thana.innerHTML =
+    '<option value="">-- থানা / উপজেলা নির্বাচন করুন --</option>';
+
+
+
+villageBox.style.display = "none";
+
+
+
+document.getElementById(
+    "customerVillage"
+).value = "";
+
+
+
+if(!district){
+
+    thana.disabled = true;
+
+    updateCheckoutTotal();
+
+    return;
+
+}
+
+
+
+const list =
+    thanaData[district] || [];
+
+
+
+list.forEach(function(item){
+
+    const option =
+        document.createElement("option");
+
+    option.value = item;
+
+    option.textContent = item;
+
+    thana.appendChild(option);
+
+});
+
+
+
+thana.disabled = false;
+
+
+
+updateCheckoutTotal();
+
+}
+
+/* =========================
+VILLAGE
+========================= */
+
+function showVillageBox(){
+
+const thana =
+    document.getElementById(
+        "customerThana"
+    ).value;
+
+
+
+const villageBox =
+    document.getElementById(
+        "villageBox"
+    );
+
+
+
+if(thana){
+
+    villageBox.style.display = "block";
+
+}else{
+
+    villageBox.style.display = "none";
+
+}
+
+}
+
+/* =========================
+DELIVERY CHARGE
+========================= */
+
+function getDeliveryCharge(){
+
+const district =
+    document.getElementById(
+        "customerDistrict"
+    ).value;
+
+
+
+if(district === "ঢাকা"){
+
+    return 60;
+
+}
+
+
+
+if(district){
+
+    return 120;
+
+}
+
+
+
+return 0;
+
+}
+
+/* =========================
+CHECKOUT TOTAL
+========================= */
+
+function updateCheckoutTotal(){
+
+const productTotal =
+    cart.reduce(function(sum,item){
+
+        return sum +
+            item.price * item.qty;
+
+    },0);
+
+
+
+const deliveryCharge =
+    getDeliveryCharge();
+
+
+
+const grandTotal =
+    productTotal +
+    deliveryCharge;
+
+
+
+document.getElementById(
+    "checkoutProductTotal"
+).textContent = productTotal;
+
+
+
+document.getElementById(
+    "deliveryCharge"
+).textContent = deliveryCharge;
+
+
+
+document.getElementById(
+    "grandTotal"
+).textContent = grandTotal;
+
+}
+
+/* =========================
+PAYMENT METHOD
+========================= */
+
+function changePaymentMethod(){
+
+const method =
+    document.querySelector(
+        'input[name="payment"]:checked'
+    ).value;
+
+
+
+const box =
+    document.getElementById(
+        "onlinePaymentBox"
+    );
+
+
+
+const transaction =
+    document.getElementById(
+        "transactionId"
+    );
+
+
+
+if(method === "Online Payment"){
+
+    box.style.display = "block";
+
+    transaction.required = true;
+
+}else{
+
+    box.style.display = "none";
+
+    transaction.required = false;
+
+    transaction.value = "";
+
+}
+
+}
+
+/* =========================
+QUANTITY
+========================= */
+
+function changeQty(id,change){
+
+const item =
+    cart.find(function(p){
+
+        return p.id === id;
+
+    });
+
+
+
+if(!item){
+
+    return;
+
+}
+
+
+
+item.qty += change;
+
+
+
+if(item.qty <= 0){
+
+    cart =
+        cart.filter(function(p){
+
+            return p.id !== id;
+
+        });
+
+}
+
+
+
+saveCart();
+
+updateCart();
+
+updateCheckoutTotal();
+
+}
+
+/* =========================
+REMOVE
+========================= */
+
+function removeCart(id){
+
+cart =
+    cart.filter(function(p){
+
+        return p.id !== id;
+
+    });
+
+
+
+saveCart();
+
+updateCart();
+
+updateCheckoutTotal();
+
+}
+
+/* =========================
+OPEN CART
+========================= */
+
+function openCart(){
+
+document.getElementById(
+    "cartOverlay"
+).style.display = "block";
+
+
+
+updateCart();
+
+}
+
+/* =========================
+CLOSE CART
+========================= */
+
+function closeCart(){
+
+document.getElementById(
+    "cartOverlay"
+).style.display = "none";
+
+}
+
+/* =========================
+OPEN CHECKOUT
+========================= */
+
+function openCheckout(){
+
+if(cart.length === 0){
+
+    alert(
+        "প্রথমে Cart-এ পণ্য যোগ করুন।"
+    );
+
+    return;
+
+}
+
+
+
+document.getElementById(
+    "cartOverlay"
+).style.display = "none";
+
+
+
+document.getElementById(
+    "checkoutModal"
+).style.display = "block";
+
+
+
+updateCheckoutTotal();
+
+}
+
+/* =========================
+CLOSE CHECKOUT
+========================= */
+
+function closeCheckout(){
+
+document.getElementById(
+    "checkoutModal"
+).style.display = "none";
+
+}
+
+/* =========================
+PLACE ORDER
+========================= */
+
+async function placeOrder(event){
+
+event.preventDefault();
+
+
+
+if(cart.length === 0){
+
+    alert("Cart খালি!");
+
+    return;
+
+}
+
+
+
+const name =
+    document.getElementById(
+        "customerName"
+    ).value.trim();
+
+
+
+const phone =
+    document.getElementById(
+        "customerPhone"
+    ).value.trim();
+
+
+
+const district =
+    document.getElementById(
+        "customerDistrict"
+    ).value;
+
+
+
+const thana =
+    document.getElementById(
+        "customerThana"
+    ).value;
+
+
+
+const village =
+    document.getElementById(
+        "customerVillage"
+    ).value.trim();
+
+
+
+const address =
+    document.getElementById(
+        "customerAddress"
+    ).value.trim();
+
+
+
+const payment =
+    document.querySelector(
+        'input[name="payment"]:checked'
+    ).value;
+
+
+
+const transactionId =
+    document.getElementById(
+        "transactionId"
+    ).value.trim();
+
+
+
+if(payment === "Online Payment" && !transactionId){
+
+    alert("Online Payment করলে Transaction ID দিতে হবে।");
+
+    return;
+
+}
+
+
+
+const deliveryCharge =
+    getDeliveryCharge();
+
+
+
+const productTotal =
+    cart.reduce(function(sum,item){
+
+        return sum +
+            Number(item.price) *
+            Number(item.qty);
+
+    },0);
+
+
+
+const grandTotal =
+    productTotal +
+    deliveryCharge;
+
+
+
+const order = {
+
+    id:
+        "MS" + Date.now(),
+
+    date:
+        new Date().toLocaleString("bn-BD"),
+
+    customerName:
+        name,
+
+    phone:
+        phone,
+
+    district:
+        district,
+
+    thana:
+        thana,
+
+    village:
+        village,
+
+    address:
+        address,
+
+    items:
+        cart.map(function(item){
+
+            return {
+                id:item.id,
+                name:item.name,
+                price:Number(item.price),
+                qty:Number(item.qty),
+                image:item.image
+            };
+
+        }),
+
+    productTotal:
+        productTotal,
+
+    deliveryCharge:
+        deliveryCharge,
+
+    total:
+        grandTotal,
+
+    payment:
+        payment,
+
+    transactionId:
+        transactionId,
+
+    status:
+        "Pending"
+
+};
+
+
+
+const submitButton =
+    document.querySelector(
+        '.place-order'
+    );
+
+
+
+submitButton.disabled = true;
+
+submitButton.textContent =
+    "⏳ অর্ডার পাঠানো হচ্ছে...";
+
+
+
+try{
+
+    const response =
+        await fetch(
+            SCRIPT_URL,
+            {
+                method:"POST",
+
+                body:JSON.stringify({
+
+                    action:"createOrder",
+
+                    ...order
+
+                })
+            }
+        );
+
+
+
+    const result =
+        await response.json();
+
+
+
+    if(!result.success){
+
+        throw new Error(
+            result.error ||
+            "Google Sheet-এ অর্ডার পাঠানো যায়নি"
+        );
+
+    }
+
+
+
+    const orders =
+        JSON.parse(
+            localStorage.getItem(
+                "ms_orders"
+            ) || "[]"
+        );
+
+
+
+    orders.push(order);
+
+
+
+    localStorage.setItem(
+        "ms_orders",
+        JSON.stringify(orders)
+    );
+
+
+
+    cart = [];
+
+
+
+    saveCart();
+
+    updateCart();
+
+    closeCheckout();
+
+
+
+    document.querySelector(
+        "form"
+    ).reset();
+
+
+
+    document.getElementById(
+        "customerThana"
+    ).innerHTML =
+        '<option value="">-- আগে জেলা নির্বাচন করুন --</option>';
+
+
+
+    document.getElementById(
+        "customerThana"
+    ).disabled = true;
+
+
+
+    document.getElementById(
+        "villageBox"
+    ).style.display = "none";
+
+
+
+    document.getElementById(
+        "onlinePaymentBox"
+    ).style.display = "none";
+
+
+
+    alert(
+        "✅ অর্ডার সফলভাবে গ্রহণ করা হয়েছে!\n\n" +
+        "Order ID: " +
+        (result.orderId || order.id) +
+        "\n\n" +
+        "মোট: ৳" +
+        order.total
+    );
+
+
+
+}catch(error){
+
+    console.error(error);
+
+
+
+    alert(
+        "❌ অর্ডার Google Sheet-এ পাঠানো যায়নি।\n\n" +
+        "ইন্টারনেট এবং Web App সেটিং পরীক্ষা করুন।"
+    );
+
+}
+
+
+
+submitButton.disabled = false;
+
+submitButton.textContent =
+    "✅ অর্ডার কনফার্ম করুন";
+
+}
+
+/* =========================
+START
+========================= */
+
+showProducts();
+
+updateCart();
+
+</script>
+
+</body>
+
+</html>
