@@ -746,6 +746,19 @@ RESPONSIVE
 
 }
 
+
+.category-bar{display:flex;gap:10px;overflow-x:auto;padding:8px 0 18px;margin-bottom:12px}
+.category-btn{flex:0 0 auto;border:1px solid #cbd5e1;background:#fff;color:#172554;padding:10px 16px;border-radius:22px;cursor:pointer;font-weight:bold}
+.category-btn.active,.category-btn:hover{background:#2563eb;color:#fff;border-color:#2563eb}
+.product{cursor:pointer}.product-info button,.size-box{cursor:default}
+.detail-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:9000;padding:18px;overflow:auto}
+.detail-panel{max-width:1050px;margin:25px auto;background:#fff;border-radius:14px;overflow:hidden;position:relative}
+.detail-close{position:absolute;right:12px;top:12px;z-index:2;border:0;background:#ef4444;color:#fff;width:40px;height:40px;border-radius:50%;font-size:25px;cursor:pointer}
+.detail-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:25px;padding:28px}
+.detail-main-image{width:100%;height:430px;object-fit:contain;background:#f8fafc;border-radius:10px}
+.detail-thumbs{display:flex;gap:8px;overflow-x:auto;margin-top:10px}.detail-thumbs img{width:70px;height:70px;object-fit:cover;border:2px solid #e2e8f0;border-radius:7px;cursor:pointer}.detail-thumbs img:hover{border-color:#2563eb}
+.detail-description{white-space:pre-wrap;line-height:1.7;color:#475569;margin:15px 0}.detail-price{font-size:28px;color:#e11d48;font-weight:bold;margin:12px 0}
+@media(max-width:700px){.detail-grid{grid-template-columns:1fr;padding:16px;gap:15px}.detail-main-image{height:300px}.detail-panel{margin:5px auto}.category-bar{margin-bottom:5px}}
 </style>
 
 </head>
@@ -808,11 +821,25 @@ Shop Now
 
 </div>
 
+<div class="category-bar" id="categoryBar">
+<button class="category-btn active" onclick="setCategory('all',this)">সব পণ্য</button>
+<button class="category-btn" onclick="setCategory('men',this)">ছেলেদের</button>
+<button class="category-btn" onclick="setCategory('women',this)">মেয়েদের</button>
+<button class="category-btn" onclick="setCategory('boys',this)">ছোট ছেলেদের</button>
+<button class="category-btn" onclick="setCategory('girls',this)">ছোট মেয়েদের</button>
+<button class="category-btn" onclick="setCategory('baby',this)">বাচ্চাদের</button>
+<button class="category-btn" onclick="setCategory('other',this)">অন্যান্য</button>
+</div>
+
 <div
 class="products"
 id="products"
 ></div>
 
+</div>
+
+<div class="detail-modal" id="productDetailModal" onclick="if(event.target===this)closeProductDetails()">
+ <div class="detail-panel"><button class="detail-close" onclick="closeProductDetails()">×</button><div id="productDetailContent"></div></div>
 </div>
 
 <footer>
@@ -1367,6 +1394,44 @@ PRODUCTS
 ========================= */
 
 let products = [];
+let activeCategory = "all";
+function getCategory(product){
+ const explicit=String(product.category||product.category_name||"").toLowerCase().trim();
+ if(explicit){
+  if(/men|ছেলে|পুরুষ/.test(explicit) && !/women|মেয়ে|মহিলা/.test(explicit)) return /baby|বাচ্চা/.test(explicit)?"baby":/boy|ছোট ছেলে/.test(explicit)?"boys":"men";
+  if(/women|মেয়ে|মহিলা/.test(explicit)) return /girl|ছোট মেয়ে/.test(explicit)?"girls":"women";
+  if(/baby|বাচ্চা|শিশু/.test(explicit)) return "baby";
+  if(/boy|ছোট ছেলে/.test(explicit)) return "boys";
+  if(/girl|ছোট মেয়ে/.test(explicit)) return "girls";
+ }
+ const n=String(product.name||"").toLowerCase();
+ if(/baby|newborn|শিশু|বাচ্চা/.test(n)) return "baby";
+ if(/girls|girl|মেয়েদের বাচ্চা|ছোট মেয়ে/.test(n)) return "girls";
+ if(/boys|boy|ছেলেদের বাচ্চা|ছোট ছেলে/.test(n)) return "boys";
+ if(/women|ladies|মেয়েদের|নারী/.test(n)) return "women";
+ if(/men|mens|ছেলেদের|পুরুষ/.test(n)) return "men";
+ return "other";
+}
+function setCategory(category,button){
+ activeCategory=category;
+ document.querySelectorAll('.category-btn').forEach(b=>b.classList.remove('active'));
+ if(button) button.classList.add('active');
+ showProducts();
+}
+function openProductDetails(id){
+ const p=products.find(x=>String(x.id)===String(id)); if(!p)return;
+ const images=getProductImages(p), sizes=getProductSizes(p), first=images[0]||'';
+ const safeId=String(p.id).replace(/'/g,"\'");
+ const old=Number(p.old_price||0), price=Number(p.price||0);
+ document.getElementById('productDetailContent').innerHTML=`<div class="detail-grid"><div><img id="detailMainImage" class="detail-main-image" src="${first}" alt="${p.name}"><div class="detail-thumbs">${images.map((im,i)=>`<img src="${im}" alt="ছবি ${i+1}" onclick="document.getElementById('detailMainImage').src=this.src">`).join('')}</div></div><div><h2>${safeText(p.name||'Product')}</h2><div class="detail-price">${old>price?`<del style="font-size:17px;color:#64748b;margin-right:8px">৳${old}</del>`:''}৳${price} ${old>price?`<span style="font-size:14px;background:#dc2626;color:#fff;padding:4px 7px;border-radius:5px">${Math.round((old-price)/old*100)}% OFF</span>`:''}</div><p><b>ক্যাটাগরি:</b> ${safeText(categoryLabel(getCategory(p)))}</p><div class="detail-description">${safeText(p.description||'এই পণ্যের বিস্তারিত তথ্য দেওয়া হয়নি।')}</div>${sizes.length?`<div class="size-box"><label><b>📏 সাইজ নির্বাচন করুন</b></label><div class="size-options" id="detail-size-${String(p.id).replace(/[^a-zA-Z0-9_-]/g,'_')}">${sizes.map(sz=>`<label class="size-option"><input type="checkbox" value="${safeText(sz)}" onclick="detailSelectOnlyOne(this)"><span>${safeText(sz)}</span></label>`).join('')}</div></div>`:'<p style="margin:12px 0;color:#64748b">এই পণ্যের সাইজ নির্দিষ্ট করা নেই।</p>'}<button onclick="detailAddCart('${safeId}')">🛒 Add to Cart</button> <button class="order-btn" onclick="detailOrderNow('${safeId}')">🛍️ অর্ডার করুন</button></div></div>`;
+ document.getElementById('productDetailModal').style.display='block';
+}
+function categoryLabel(c){return ({men:'ছেলেদের',women:'মেয়েদের',boys:'ছোট ছেলেদের',girls:'ছোট মেয়েদের',baby:'বাচ্চাদের',other:'অন্যান্য'})[c]||'সব পণ্য'}
+function closeProductDetails(){document.getElementById('productDetailModal').style.display='none'}
+function detailSelectOnlyOne(input){if(!input.checked)return;const group=input.closest(".size-options");if(group)group.querySelectorAll('input[type="checkbox"]').forEach(x=>{if(x!==input)x.checked=false})}
+function detailSelectedSize(id){const box=document.querySelector('#detail-size-'+String(id).replace(/[^a-zA-Z0-9_-]/g,'_'));const checked=box&&box.querySelector('input:checked');return checked?checked.value:''}
+function detailAddCart(id){const size=detailSelectedSize(id);const p=products.find(x=>String(x.id)===String(id));if(p&&getProductSizes(p).length&&!size){alert('অনুগ্রহ করে সাইজ নির্বাচন করুন!');return}closeProductDetails();addToCart(id,size)}
+function detailOrderNow(id){const size=detailSelectedSize(id);const p=products.find(x=>String(x.id)===String(id));if(p&&getProductSizes(p).length&&!size){alert('অনুগ্রহ করে সাইজ নির্বাচন করুন!');return}closeProductDetails();orderNow(id,size)}
 
 /* =========================
 LOAD PRODUCTS FROM GOOGLE SHEET
@@ -1842,6 +1907,7 @@ localStorage.setItem(
 /* =========================
 SHOW PRODUCTS
 ========================= */
+
 function showProducts(){
 
 const box =
@@ -1856,9 +1922,8 @@ const search =
 const filtered =
     products.filter(function(product){
 
-        return String(product.name)
-            .toLowerCase()
-            .includes(search);
+        const matchesSearch = (String(product.name||"") + " " + String(product.description||"")).toLowerCase().includes(search);
+        return matchesSearch && (activeCategory === "all" || getCategory(product) === activeCategory);
 
     });
 
@@ -1955,7 +2020,7 @@ box.innerHTML =
 
             <div
             class="product-image-box"
-            onclick="openImageGallery('${safeId}')"
+            onclick="openProductDetails('${safeId}')"
             >
 
                 <img
@@ -1979,26 +2044,13 @@ box.innerHTML =
 
             <div class="product-info">
 
-                <h3>
-                    ${product.name}
+                <h3 onclick="openProductDetails('${safeId}')" style="cursor:pointer">
+                    ${safeText(product.name)}
                 </h3>
-<div class="price">
-    ${
-        Number(product.old_price || 0) > Number(product.price || 0)
-        ? `
-            <span style="text-decoration:line-through;color:#888;font-size:14px;margin-right:6px;">
-                ৳${Number(product.old_price)}
-            </span>
-            <span style="color:#dc2626;font-weight:bold;">
-                ৳${Number(product.price || 0)}
-            </span>
-            <span style="background:#dc2626;color:white;padding:3px 6px;border-radius:5px;font-size:12px;">
-                ${Math.round((Number(product.old_price)-Number(product.price))/Number(product.old_price)*100)}% OFF
-            </span>
-          `
-        : `৳${Number(product.price || 0)}`
-    }
-</div>
+
+                <div class="price">
+                    ৳${product.price}
+                </div>
 
                 ${sizeHTML}
 
