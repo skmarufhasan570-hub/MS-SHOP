@@ -1842,7 +1842,6 @@ localStorage.setItem(
 /* =========================
 SHOW PRODUCTS
 ========================= */
-
 function showProducts(){
 
 const box =
@@ -1983,10 +1982,23 @@ box.innerHTML =
                 <h3>
                     ${product.name}
                 </h3>
-
-                <div class="price">
-                    ৳${product.price}
-                </div>
+<div class="price">
+    ${
+        Number(product.old_price || 0) > Number(product.price || 0)
+        ? `
+            <span style="text-decoration:line-through;color:#888;font-size:14px;margin-right:6px;">
+                ৳${Number(product.old_price)}
+            </span>
+            <span style="color:#dc2626;font-weight:bold;">
+                ৳${Number(product.price || 0)}
+            </span>
+            <span style="background:#dc2626;color:white;padding:3px 6px;border-radius:5px;font-size:12px;">
+                ${Math.round((Number(product.old_price)-Number(product.price))/Number(product.old_price)*100)}% OFF
+            </span>
+          `
+        : `৳${Number(product.price || 0)}`
+    }
+</div>
 
                 ${sizeHTML}
 
