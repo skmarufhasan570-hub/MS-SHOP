@@ -667,6 +667,8 @@ th{
 
 }
 
+
+.category-select{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:7px;background:#fff}
 </style>
 
 </head>
@@ -789,20 +791,6 @@ th{
 
                     </div>
 
-                    
-            <div class="form-group">
-
-         <label>Old Price (আগের দাম)</label>
-
-            <input
-              id="productOldPrice"
-            type="number"
-             min="0"
-             placeholder="1000"
-    >
-          </div>
-
-
                     <div class="form-group">
 
                         <label>Image URL 1</label>
@@ -857,6 +845,13 @@ th{
                             placeholder="যেমন: S, M, L, XL, XXL অথবা 30, 32, 34, 36, 38, 40"
                         >
 
+                    </div>
+
+                    <div class="form-group">
+                        <label>Product Category</label>
+                        <select id="productCategory" class="category-select" required>
+                            <option value="men">ছেলেদের</option><option value="women">মেয়েদের</option><option value="boys">ছোট ছেলেদের</option><option value="girls">ছোট মেয়েদের</option><option value="baby">বাচ্চাদের</option><option value="other">অন্যান্য</option>
+                        </select>
                     </div>
 
                     <div class="form-group">
@@ -976,14 +971,7 @@ th{
             id="editProductPrice"
             type="number"
         >
-         <label>Old Price (আগের দাম)</label>
 
-         <input
-             id="editProductOldPrice"
-             type="number"
-             min="0"
-             placeholder="1000"
->
         <label>Image URL 1</label>
 
         <input
@@ -1019,6 +1007,11 @@ th{
             type="text"
             placeholder="যেমন: S, M, L, XL, XXL অথবা 30, 32, 34, 36, 38, 40"
         >
+
+        <label>Product Category</label>
+        <select id="editProductCategory" class="category-select" style="margin-bottom:15px">
+            <option value="men">ছেলেদের</option><option value="women">মেয়েদের</option><option value="boys">ছোট ছেলেদের</option><option value="girls">ছোট মেয়েদের</option><option value="baby">বাচ্চাদের</option><option value="other">অন্যান্য</option>
+        </select>
 
         <label>Product Description</label>
 
@@ -1229,35 +1222,16 @@ async function getProducts(){
 async function sendProduct(data){
     try {
         let result;
-
-        const row = {
-            name: data.name,
-            price: Number(data.price),
-            old_price: Number(data.old_price) || 0,
-            image: (data.images && data.images.length ? data.images : [data.image]).filter(Boolean).join("|"),
-            sizes: Array.isArray(data.sizes) ? data.sizes.join(",") : data.sizes,
-            description: data.description || ""
-        };
-
-        if(data.action === "createProduct") {
-            result = await db.from("products").insert(row);
-        } else if(data.action === "updateProduct") {
-            result = await db.from("products").update(row).eq("id", data.id);
-        } else if(data.action === "deleteProduct") {
-            result = await db.from("products").delete().eq("id", data.id);
-        } else {
-            throw new Error("Unknown product action");
-        }
-
+        const row = { name:data.name, category:data.category || "other", price:Number(data.price), old_price:Number(data.old_price)||0, image:(data.images && data.images.length ? data.images : [data.image]).filter(Boolean).join("|"), sizes:Array.isArray(data.sizes)?data.sizes.join(","):data.sizes, description:data.description || "" };
+        if(data.action === "createProduct") result = await db.from("products").insert(row);
+        else if(data.action === "updateProduct") result = await db.from("products").update(row).eq("id",data.id);
+        else if(data.action === "deleteProduct") result = await db.from("products").delete().eq("id",data.id);
+        else throw new Error("Unknown product action");
         if(result.error) throw result.error;
         return true;
-
-    } catch(error) {
-        console.error("Supabase product save:", error);
-        alert("❌ পণ্য সংরক্ষণ হয়নি: " + (error.message || ""));
-        return false;
-    }
+    } catch(error) { console.error("Supabase product save:",error); alert("❌ পণ্য সংরক্ষণ হয়নি: " + (error.message || "")); return false; }
 }
+
 
 /* ================= ADD PRODUCT ================= */
 
@@ -1300,9 +1274,6 @@ async function addProduct(event){
                 "productPrice"
             ).value
         );
-   const oldPrice = Number(
-    document.getElementById("productOldPrice").value
-    ) || 0;
 
     const image1 =
         document.getElementById(
@@ -1325,14 +1296,13 @@ async function addProduct(event){
         ).value.trim();
 
     const sizesText =
-    document.getElementById(
-        "productSizes"
-    ).value.trim();
+        document.getElementById(
+            "productSizes"
+        ).value.trim();
 
     const description =
-        document.getElementById(
-            "productDescription"
-        ).value.trim();
+        document.getElementById("productDescription").value.trim();
+    const category = document.getElementById("productCategory").value;
 
     if(!name || price <= 0 || !image1){
 
@@ -1372,10 +1342,8 @@ async function addProduct(event){
 
     const product = {
 
-        old_price: oldPrice,
-
         name:name,
-
+        category:category,
         price:price,
 
         image:image1,
@@ -1444,13 +1412,13 @@ async function addProduct(event){
 
     document.getElementById("productName").value = "";
     document.getElementById("productPrice").value = "";
-    document.getElementById("productOldPrice").value = "";
     document.getElementById("productImage").value = "";
     document.getElementById("productImage2").value = "";
     document.getElementById("productImage3").value = "";
     document.getElementById("productImage4").value = "";
     document.getElementById("productSizes").value = "";
     document.getElementById("productDescription").value = "";
+    document.getElementById("productCategory").value = "men";
 
     showAdminProducts();
 
@@ -1545,9 +1513,6 @@ function editProduct(id){
     document.getElementById("editProductPrice").value =
         product.price || "";
 
-        document.getElementById("editProductOldPrice").value =
-    product.old_price || "";
-
     document.getElementById("editProductImage").value =
         images[0] || "";
 
@@ -1565,6 +1530,7 @@ function editProduct(id){
 
     document.getElementById("editProductDescription").value =
         product.description || "";
+    document.getElementById("editProductCategory").value = product.category || "other";
 
     document.getElementById("editModal").style.display =
         "block";
@@ -1585,16 +1551,14 @@ async function saveEditedProduct(){
             "editProductName"
         ).value.trim();
 
-    const price = 
+    const price =
         Number(
             document.getElementById(
                 "editProductPrice"
             ).value
         );
-      const oldPrice = Number(
-    document.getElementById("editProductOldPrice").value
-) || 0;
-      const image1 =
+
+    const image1 =
         document.getElementById(
             "editProductImage"
         ).value.trim();
@@ -1620,9 +1584,8 @@ async function saveEditedProduct(){
         ).value.trim();
 
     const description =
-        document.getElementById(
-            "editProductDescription"
-        ).value.trim();
+        document.getElementById("editProductDescription").value.trim();
+    const category = document.getElementById("editProductCategory").value;
 
     if(!name || price <= 0 || !image1){
 
@@ -1649,7 +1612,8 @@ async function saveEditedProduct(){
             })
             .filter(Boolean);
 
-    const success = await sendProduct({ action:"updateProduct", id:String(id), name, price, old_price:oldPrice, image:image1, images, sizes, description });
+    const success = await sendProduct({ action:"updateProduct", id:String(id), name, category, price, old_price:Number(document.getElementById("editProductOldPrice").value)||0, image:image1, images, sizes, description });
+
     if(!success){
 
         return;
@@ -1746,24 +1710,12 @@ function showAdminProducts(){
                     <strong>
                         ${safeText(product.name)}
                     </strong>
+                    <div style="margin-top:5px;color:#2563eb;font-size:13px">ক্যাটাগরি: ${safeText(({men:"ছেলেদের",women:"মেয়েদের",boys:"ছোট ছেলেদের",girls:"ছোট মেয়েদের",baby:"বাচ্চাদের",other:"অন্যান্য"})[product.category]||"অন্যান্য")}</div>
 
-                  <p style="margin-top:6px;">
-           ${
-        Number(product.old_price || 0) > Number(product.price || 0)
-        ? `<span style="color:#64748b;text-decoration:line-through;margin-right:7px;">৳${Number(product.old_price)}</span>`
-        : ""
-         }
+                    <p style="margin-top:6px;">
+                        ৳${Number(product.price || 0)}
+                    </p>
 
-        <strong style="color:#dc2626;">
-        ৳${Number(product.price || 0)}
-     </strong>
-
-        ${
-        Number(product.old_price || 0) > Number(product.price || 0)
-        ? `<span style="background:#dc2626;color:white;padding:3px 6px;border-radius:5px;font-size:12px;margin-left:6px;">${Math.round((Number(product.old_price)-Number(product.price))/Number(product.old_price)*100)}% OFF</span>`
-        : ""
-      }
-    </p>
                     ${
                         images.length > 1
                         ?
